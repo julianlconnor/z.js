@@ -12,7 +12,7 @@ If you got to ask.. you can't afford it.
 
 z.js wraps rendering functions with a blocking invocation which will HELP ensure fresh data at all times.
 
-This is achieved by overriding Backbone.sync with a custom method that updates localStorage upon every request.
+This is achieved by overriding Backbone.sync with a custom method that will update localStorage upon every request.
 
 ### License
 
