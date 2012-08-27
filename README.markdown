@@ -10,6 +10,10 @@ z.js is a small localStorage persistence layer for your Backbone models and coll
 
 If you got to ask.. you can't afford it.
 
+z.js wraps rendering functions with a blocking invocation which will HELP ensure fresh data at all times.
+
+This is achieved by overriding Backbone.sync with a custom method that updates localStorage upon every request.
+
 ### License
 
 Copyright (c) 2012 Julian Connor
