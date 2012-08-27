@@ -6,8 +6,9 @@ z.js is a small localStorage persistence layer for your Backbone models and coll
 
 ### Why is this useful?
 
+![zj](http://i.imgur.com/OuqZQ.jpg)  
+
 If you got to ask.. you can't afford it.
-![zj](http://i.imgur.com/OuqZQ.jpg)
 
 ### License
 
