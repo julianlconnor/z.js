@@ -12,8 +12,10 @@
 */
 
 // TODO: I'm predicting context issues.. (maybe)
-// TODO: Avoid more than one stringification each pass.
+// TODO: Avoid more than one stringification each pass. (Save dump on model?)
 // TODO: Namespace all methods differently in order to avoid collisions.
+// TODO: Callback priority may be out of sync.. E.g., saveDump should occur
+// after model/collection changes.
 
 Backbone.zModel = Backbone.Model;
 Backbone.zCollection = Backbone.Collection;
