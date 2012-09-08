@@ -16,11 +16,31 @@
 // TODO: Namespace all methods differently in order to avoid collisions.
 // TODO: Callback priority may be out of sync.. E.g., saveDump should occur
 // after model/collection changes.
+// TODO: Need a way to keep track of all items in localStorage in order to wipe
+// entries based on some conditional
 
 Backbone.zModel = Backbone.Model;
 Backbone.zCollection = Backbone.Collection;
 
-window.z = {};
+window.z = {
+    wipeOn : function(fn) {
+        /*
+        * Sets wipe conditional. Wipes localStorage of all z.js related rows when fn is true.
+        */
+        this.shouldWipe = fn;
+    },
+
+    wipe : function() {
+        /*
+        * Wipes all z.js localStorage entries. Could be useful for security.
+        */
+        var val;
+
+        for ( key in localStorage ) {
+            if ( key.indexOf('_z/') !== -1 ) localStorage.removeItem(key);
+        }
+    }
+};
 
 z.base = {
     /*
@@ -43,8 +63,20 @@ z.base = {
         /*
         * Memoized token call that will either return or compute the proper
         * token necessary for storing values in localStorage.
+        *
+        * Prepends '_z/' on token. Used to distinguish z.js localStorage entries
+        * from other entries. Necessary for localStorage wipes. Prepended
+        * underscore is to reduce the likelyhood of clobbering something we
+        * didn't want to.
         */
         var _this = this.collection || this;
+
+        /*
+        * checks shouldWipe, if it should wipe localStorage then it does.
+        */
+        if ( z.shouldWipe && _.isFunction(z.shouldWipe) ?
+                z.shouldWipe() : z.shouldWipe )
+            z.wipe();
 
         if ( !this._token ) {
             /*
@@ -56,7 +88,7 @@ z.base = {
             this._token = _.isFunction(_this.url) ? _this.url() : _this.url;
             
             if ( !this.collection && this.cid )
-                this._token = this.cid + this._token;
+                this._token = '_z/' + this.cid + this._token;
         }
 
         return this._token;
@@ -172,6 +204,7 @@ _.extend(Backbone.zCollection.prototype, z.base, z.collection);
 /*
 * Garbage collect window.z..
 */
-delete window['z'];
+delete window.z['model'];
+delete window.z['collection'];
 
 
