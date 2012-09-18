@@ -69,7 +69,8 @@ z.base = {
         * underscore is to reduce the likelyhood of clobbering something we
         * didn't want to.
         */
-        var _this = this.collection || this;
+        var _this = this.collection || this,
+            _hat;
 
         /*
         * checks shouldWipe, if it should wipe localStorage then it does.
@@ -88,7 +89,15 @@ z.base = {
             this._token = _.isFunction(_this.url) ? _this.url() : _this.url;
             
             if ( !this.collection && this.cid )
-                this._token = '_z/' + this.cid + this._token;
+                this._token = this.cid + this._token;
+
+            /*
+            * Prepend '_z' || '_z/'.
+            */
+            _hat = '_z';
+            if ( this._token.indexOf('/') !== 0 ) _hat = _hat + '/';
+
+            this._token = _hat + this._token;
         }
 
         return this._token;
